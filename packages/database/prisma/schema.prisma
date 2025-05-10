@@ -29,26 +29,20 @@ model Zap {
   userId Int?
 }
 
-model Trigger {
-  id String @id @default(uuid())
-}
-
 model Action {
-  id String @id @default(uuid())
-}
-
-model AvailableTriggers {
-  id String @id @default(uuid())
+  id                String             @id @default(uuid())
+  name              String
+  availableActionss AvailableActions[]
 }
 
 model AvailableActions {
-  id String @id @default(uuid())
+  id       String  @id @default(uuid())
+  Action   Action? @relation(fields: [actionId], references: [id])
+  actionId String?
 }
 
-model ZapRun {
-  id String @id @default(uuid())
-}
-
-model ZapRunOutbox {
-  id String @id @default(uuid())
-}
+/**
+ * available trigger - saare availbale triggers ko store karega so availbale triggers contain many triggers
+ * same for actions '' '' ''....
+ * availbale triggers - trigger : 1 : many relationship
+ */
