@@ -49,7 +49,7 @@ router.post("/signin", async (req, res) => {
         res.json({ message: "user signedin successfully" })
     }
 
-    res.json({message: "invalid credentials"})
+    res.json({ message: "invalid credentials" })
 })
 
 export default router;
