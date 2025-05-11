@@ -33,16 +33,16 @@ model Zap {
 model Action {
   id               String            @id @default(uuid())
   name             String
-  zapId            String
-  zap              Zap               @relation(fields: [zapId], references: [id])
+  zapId            String 
+  zap              Zap?              @relation(fields: [zapId], references: [id])
   availableActions AvailableAction[]
 }
 
 model AvailableAction {
-  id       String  @id @default(uuid())
+  id       String @id @default(uuid())
   name     String
-  action   Action? @relation(fields: [actionId], references: [id])
-  actionId String?
+  action   Action @relation(fields: [actionId], references: [id])
+  actionId String
 }
 
 /**
