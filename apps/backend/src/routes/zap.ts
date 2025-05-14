@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
-    // TODO : take information from use jwt
+    // TODO : take information from user use jwt
     const userId = parseInt(req.params.id);
 
     try {
@@ -53,9 +53,9 @@ router.get("/:id", async (req, res) => {
                 userId: userId
             },
             include: {
-                actions : {
+                actions: {
                     include: {
-                        availableActions : true
+                        availableActions: true
                     }
                 }
             }
