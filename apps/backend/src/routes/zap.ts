@@ -40,7 +40,31 @@ router.post("/", async (req, res) => {
     })
 
     console.log(zapId);
-    res.json({message: "request succeed zap created"})
+    res.json({ message: "request succeed zap created" })
+})
+
+router.get("/:id", async (req, res) => {
+    // TODO : take information from use jwt
+    const userId = parseInt(req.params.id);
+
+    try {
+        const userZap = await prisma.zap.findMany({
+            where: {
+                userId: userId
+            },
+            include: {
+                actions : {
+                    include: {
+                        availableActions : true
+                    }
+                }
+            }
+        })
+        res.json({ zap: userZap })
+    } catch (error) {
+        res.json({ message: "zaps not found" })
+    }
+
 })
 
 export default router;
