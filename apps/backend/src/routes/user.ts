@@ -37,8 +37,6 @@ router.post("/signup", async (req, res) => {
     }
 })
 
-
-
 router.post("/signin", async (req, res) => {
     const body: User = req.body;
     const user = await prisma.user.findFirst({
