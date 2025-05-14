@@ -27,26 +27,56 @@ model Zap {
   name    String
   user    User?    @relation(fields: [userId], references: [id])
   userId  Int?
+  trigger Trigger?
+  zapRuns ZapRun[]
   actions Action[]
 }
 
 model Action {
-  id               String            @id @default(uuid())
-  name             String
-  zapId            String 
-  zap              Zap?              @relation(fields: [zapId], references: [id])
-  availableActions AvailableAction[]
+  id       String          @id @default(uuid())
+  metadata Json            @default("{}")
+  zapId    String
+  actionId String
+  zap      Zap?            @relation(fields: [zapId], references: [id])
+  type     AvailableAction @relation(fields: [actionId], references: [id])
 }
 
 model AvailableAction {
-  id       String @id @default(uuid())
-  name     String
-  action   Action @relation(fields: [actionId], references: [id])
-  actionId String
+  id      String   @id @default(uuid())
+  name    String
+  image   String
+  actions Action[]
 }
 
-/**
- * available trigger - saare availbale triggers ko store karega so availbale triggers contain many triggers
- * same for actions '' '' ''....
- * availbale triggers - trigger : 1 : many relationship
- */
+model Trigger {
+  id        String           @id @default(uuid())
+  zapId     String           @unique
+  metadata  Json             @default("{}")
+  triggerId String
+  type      AvailableTrigger @relation(fields: [triggerId], references: [id])
+  zap       Zap              @relation(fields: [zapId], references: [id])
+  // figure out why we need sorting order...
+}
+
+model AvailableTrigger {
+  id       String    @id @default(uuid())
+  name     String
+  image    String
+  triggers Trigger[]
+}
+
+
+// following outbox pattern archietecture
+model ZapRun {
+  id           String        @id @default(uuid())
+  zapId        String
+  metadata     Json
+  zap          Zap           @relation(fields: [zapId], references: [id])
+  zapRunOutbox ZapRunOutbox?
+}
+
+model ZapRunOutbox {
+  id       String @id @default(uuid())
+  zapRunId String @unique
+  zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
+}

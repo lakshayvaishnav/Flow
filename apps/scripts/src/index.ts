@@ -1,3 +1,5 @@
+// scrip to seed some dummy data inside databse postgres
+
 import { prisma } from "@repo/db"
 
 async function createuser() {
