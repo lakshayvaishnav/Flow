@@ -1,12 +1,13 @@
 import express from "express"
+import userRouter from "./routes/user.js"
 
 const app = express();
+app.use(express.json())
 
 
-app.get("/", (req,res)=> {
-    res.send("heelo world")
-})
+app.use("/api/v1/user", userRouter);
 
-app.listen(3000,() => {
-    console.log("app running on 3000")
+
+app.listen(3000, () => {
+    console.log("server running on 3000")
 })

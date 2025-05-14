@@ -2,6 +2,7 @@
     "watch": [
         "src"
     ],
+    "ignore":["dist"],
     "ext": "ts",
-    "exec": "npm-run-all build start"
+    "exec": "node --loader ts-node/esm  src/index.ts"
 }

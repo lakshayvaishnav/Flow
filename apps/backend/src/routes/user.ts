@@ -37,19 +37,19 @@ router.post("/signup", async (req, res) => {
     }
 })
 
-router.post("/signin", async (req, res) => {
-    const body: User = req.body;
-    const user = await prisma.user.findFirst({
-        where: {
-            email: body.email
-        }
-    })
+// router.post("/signin", async (req, res) => {
+//     const body: User = req.body;
+//     const user = await prisma.user.findFirst({
+//         where: {
+//             email: body.email
+//         }
+//     })
 
-    if (user?.name == body.name && user.password == body.password && user.email == body.email) {
-        res.json({ message: "user signedin successfully" })
-    }
+//     if (user?.name == body.name && user.password == body.password && user.email == body.email) {
+//         res.json({ message: "user signedin successfully" })
+//     }
 
-    res.json({ message: "invalid credentials" })
-})
+//     res.json({ message: "invalid credentials" })
+// })
 
 export default router;
