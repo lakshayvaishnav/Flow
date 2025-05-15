@@ -89,6 +89,28 @@ async function main() {
             }
         }
     })
+    console.log("zap : ", zap)
+    // ----------------------------------------------------
+    // now the outbox pattern part
+    const zapRun = await prisma.zapRun.create({
+        data: {
+            zapId: zap.id,
+            metadata: {
+                event: "issue created"
+            },
+
+        }
+    })
+
+    console.log("zaprun : ", zapRun)
+
+    const zapRunOutbox = await prisma.zapRunOutbox.create({
+        data: {
+            zapRunId: zapRun.id
+        }
+    })
+
+    console.log("zaprunoutbox : ", zapRunOutbox)
 }
 
 main()
