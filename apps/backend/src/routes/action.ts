@@ -3,22 +3,13 @@ import { Router } from "express"
 
 const router = Router()
 
-router.get("/:actionId/available", async (req, res) => {
+router.get("/available", async (req, res) => {
     // find available actiosn according to the action selected
 
-    const actionId = req.params.actionId;
-    if (!actionId) {
-        res.json({ message: "no action id provided" })
-        return;
-    }
 
-    const availableActions = await prisma.availableAction.findMany({
-        where: {
-            actionId: actionId
-        }
-    })
+    const availableActions = await prisma.availableAction.findMany({})
 
-    res.json({availableActions})
+    res.json({ availableActions })
 
 })
 export default router;
