@@ -9,8 +9,11 @@ type User = {
     password: string
 }
 
-router.get("/sign", (req, res) => {
-    res.json({ message: "hii bro" })
+
+
+router.get("/sign/:id", (req, res) => {
+    const id = req.params.id
+    res.json({ message: "hii bro", id: id })
 })
 
 router.post("/signup", async (req, res) => {
@@ -50,6 +53,7 @@ router.post("/signin", async (req, res) => {
 
     if (user.password === body.password) { // Always use === for comparison
          res.json({ message: "User signed in successfully" });
+         return;
     }
 
      res.status(401).json({ message: "Invalid credentials" });

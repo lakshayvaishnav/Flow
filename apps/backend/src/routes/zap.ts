@@ -9,12 +9,12 @@ router.post("/", async (req, res) => {
     // @ts-ignore
     const id = req.id
     const body = req.body
+    console.log("body : ", body)
+    const parsedData = zapSchema.safeParse(body);
 
-    const parsedData = zapSchema.safeParse(body).data;
+    console.log("✅ parsed data : ", parsedData.data)
 
-    console.log("✅ parsed data : ", parsedData)
-
-    if (!parsedData) {
+    if (!parsedData.success) {
         res.json({ message: "invalid body structure" })
         return;
     }
@@ -22,16 +22,16 @@ router.post("/", async (req, res) => {
     const zapId = await prisma.$transaction(async (tx) => {
         return await tx.zap.create({
             data: {
-                name: parsedData.name,
-                userId: parsedData.userId,
+                name: parsedData.data.name,
+                userId: parsedData.data.userId,
                 trigger: {
                     create: {
-                        metadata: parsedData.tirgger.metadata,
-                        triggerId: parsedData.tirgger.triggerId
+                        metadata: parsedData.data.trigger.metadata,
+                        triggerId: parsedData.data.trigger.triggerId
                     }
                 },
                 actions: {
-                    create: parsedData.actions.map((x) => ({
+                    create: parsedData.data.actions.map((x) => ({
                         metadata: x.metadata,
                         actionId: x.actionId
                     }))
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
     })
 
     console.log(zapId);
-    res.json({ message: "request succeed zap created" })
+    res.json({ zapId: zapId, message: "request succeed zap created" })
 })
 
 router.get("/:zapId", async (req, res) => {
@@ -49,31 +49,34 @@ router.get("/:zapId", async (req, res) => {
     const id = req.id
     // TODO : take information from user use jwt
     const zapId = (req.params.zapId);
+    console.log("zapid :", zapId)
 
-    try {
-        const zap = await prisma.zap.findFirst({
-            where: {
-                id: zapId,
-                userId: id,
-            },
-            include: {
-                actions: {
-                    include: {
-                        type: true
-                    }
-                },
-                trigger: {
-                    include: {
-                        type: true
-                    }
+    const zap = await prisma.zap.findFirst({
+        where: {
+            id: zapId,
+            // userId: id,
+        },
+        include: {
+            actions: {
+                include: {
+                    type: true
                 }
-                ,
             },
+            trigger: {
+                include: {
+                    type: true
+                }
+            }
+            ,
+        },
 
-        })
-    } catch (error) {
-        res.json({ message: "zaps not found" })
+    })
+
+    if (!zap) {
+        res.json({ message: "no zaps found" })
+        return;
     }
+    res.json({ zap: zap })
 
 })
 

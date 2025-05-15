@@ -3,7 +3,7 @@ import z from "zod"
 export const zapSchema = z.object({
     name: z.string(),
     userId: z.number(),
-    tirgger: z.object({
+    trigger: z.object({
         metadata: z.object({}),
         triggerId: z.string()
     }),
