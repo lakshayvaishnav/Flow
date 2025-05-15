@@ -1,5 +1,5 @@
 // scrip to seed some dummy data inside databse postgres
-
+// updating the scripts for new db
 import { prisma } from "@repo/db"
 
 async function createuser() {
