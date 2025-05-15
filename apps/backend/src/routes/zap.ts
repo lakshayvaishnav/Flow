@@ -24,15 +24,16 @@ router.post("/", async (req, res) => {
             data: {
                 name: parsedData.name,
                 userId: parsedData.userId,
+                trigger: {
+                    create: {
+                        metadata: parsedData.tirgger.metadata,
+                        triggerId: parsedData.tirgger.triggerId
+                    }
+                },
                 actions: {
                     create: parsedData.actions.map((x) => ({
-                        name: x.name,
-
-                        availableActions: {
-                            create: x.availableActions.map((y) => ({
-                                name: y.name,
-                            }))
-                        }
+                        metadata: x.metadata,
+                        actionId: x.actionId
                     }))
                 }
             }
@@ -43,24 +44,33 @@ router.post("/", async (req, res) => {
     res.json({ message: "request succeed zap created" })
 })
 
-router.get("/:id", async (req, res) => {
+router.get("/:zapId", async (req, res) => {
+    //@ts-ignore
+    const id = req.id
     // TODO : take information from user use jwt
-    const userId = parseInt(req.params.id);
+    const zapId = (req.params.zapId);
 
     try {
-        const userZap = await prisma.zap.findMany({
+        const zap = await prisma.zap.findFirst({
             where: {
-                userId: userId
+                id: zapId,
+                userId: id,
             },
             include: {
                 actions: {
                     include: {
-                        availableActions: true
+                        type: true
+                    }
+                },
+                trigger: {
+                    include: {
+                        type: true
                     }
                 }
-            }
+                ,
+            },
+
         })
-        res.json({ zap: userZap })
     } catch (error) {
         res.json({ message: "zaps not found" })
     }

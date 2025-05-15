@@ -3,11 +3,13 @@ import z from "zod"
 export const zapSchema = z.object({
     name: z.string(),
     userId: z.number(),
+    tirgger: z.object({
+        metadata: z.object({}),
+        triggerId: z.string()
+    }),
     actions: z.array(z.object({
-        name: z.string(),
-        availableActions: z.array(z.object({
-            name: z.string()
-        }))
+        metadata: z.object({}),
+        actionId: z.string()
     }))
 })
 
