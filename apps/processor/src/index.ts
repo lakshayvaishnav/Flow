@@ -15,6 +15,7 @@ const kafka = new Kafka({
 
 async function main() {
     const producer = kafka.producer();
+    producer.connect()
     while (1) {
         const pendingRows = await prisma.zapRunOutbox.findMany({
             where: {},

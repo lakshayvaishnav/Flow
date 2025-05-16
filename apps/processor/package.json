@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
+    "dev": "nodemon",
+    "build": "tsc -b",
     "test": "echo 'Add test script here'",
-    "lint": "echo 'Add lint script here'"
+    "lint": "echo 'Add lint script here'",
+    "start": "node dist/index.js"
   },
   "devDependencies": {
     "@repo/db": "*",
@@ -15,6 +16,7 @@
     "@repo/typescript-config": "*"
   },
   "dependencies": {
-    "kafkajs": "^2.2.4"
+    "kafkajs": "^2.2.4",
+    "nodemon": "^3.1.10"
   }
 }
