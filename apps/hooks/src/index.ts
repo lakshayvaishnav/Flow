@@ -13,6 +13,9 @@ app.post("/hooks/catch/:userId/:zapId", async (req, res) => {
     console.log("body : ", body)
 
     // create zaprun and zaprunoutbox
+    // for suppose sol transaction....
+    // so inside metadata all the relative fields will be present....
+    
     const zapRunOutboxId = await prisma.$transaction(async tx => {
         const zapRun = await tx.zapRun.create({
             data: {
@@ -29,7 +32,7 @@ app.post("/hooks/catch/:userId/:zapId", async (req, res) => {
 
         console.log("zaprunoutbox created : ", zapRunOutbox)
         return zapRunOutbox.id
-    })
+    }) 
 
     res.json({"zap run outbox id ":zapRunOutboxId})
 })
