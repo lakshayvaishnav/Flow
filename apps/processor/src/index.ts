@@ -4,7 +4,7 @@ import { prisma } from "@repo/db"
 const TOPIC_NAME = "zap-events"
 
 // take 10 rows from zapRuns
-// give it to kafka queus
+// give it to kafka queues
 // now delete those 10 rows from zaprunoutbox
 
 const kafka = new Kafka({
@@ -15,7 +15,7 @@ const kafka = new Kafka({
 
 async function main() {
     const producer = kafka.producer();
-    producer.connect()
+    await producer.connect()
     while (1) {
         const pendingRows = await prisma.zapRunOutbox.findMany({
             where: {},
